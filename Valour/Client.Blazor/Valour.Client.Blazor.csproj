@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly" TreatAsLocalProperty="SelfContained">
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
     <ImplicitUsings>true</ImplicitUsings>
     <DebugType>portable</DebugType>
@@ -15,7 +15,6 @@
 <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.3" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="10.0.3" />
-    <PackageReference Include="Microsoft.DotNet.HotReload.WebAssembly.Browser" Version="10.0.102" />
     <PackageReference Include="Sentry.AspNetCore.Blazor.WebAssembly" Version="6.1.0" />
   </ItemGroup>
 

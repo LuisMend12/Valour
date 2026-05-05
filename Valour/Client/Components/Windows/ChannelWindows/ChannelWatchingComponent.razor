@@ -39,7 +39,7 @@
     /// <summary>
     /// Icons to be displayed
     /// </summary>
-    public List<User> DisplayData { get; set; }
+    public List<User> DisplayData { get; set; } = new();
 
     /// <summary>
     /// The total number of watching users
@@ -47,12 +47,26 @@
     public int TotalCount { get; set; }
 
     private int _watchingUpdateVersion;
+    private Channel _subscribedChannel;
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        DisplayData = new();
-        Channel.WatchingUpdated += OnWatchingUpdate;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (ReferenceEquals(_subscribedChannel, Channel))
+            return;
+
+        if (_subscribedChannel is not null)
+            _subscribedChannel.WatchingUpdated -= OnWatchingUpdate;
+
+        _subscribedChannel = Channel;
+        if (_subscribedChannel is not null)
+            _subscribedChannel.WatchingUpdated += OnWatchingUpdate;
+
+        Clear();
     }
 
     private void Clear()
@@ -64,7 +78,8 @@
 
     void IDisposable.Dispose()
     {
-        Channel.WatchingUpdated -= OnWatchingUpdate;
+        if (_subscribedChannel is not null)
+            _subscribedChannel.WatchingUpdated -= OnWatchingUpdate;
     }
 
     /// <summary>
@@ -73,6 +88,9 @@
     /// </summary>
     public virtual Task OnWatchingUpdate(ChannelWatchingUpdate update)
     {
+        if (Channel is null)
+            return Task.CompletedTask;
+
         if (update.ChannelId != Channel.Id)
             return Task.CompletedTask;
 
