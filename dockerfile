@@ -1,6 +1,6 @@
-# Start with the official .NET 10.0 SDK image
+# Start with the official .NET 11.0 SDK image
 # Cache the dependencies so we don't have to restore them every time
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS dependencies
+FROM mcr.microsoft.com/dotnet/sdk:11.0 AS dependencies
 
 # Install Node.js (replace with the latest LTS version)
 RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
@@ -42,7 +42,7 @@ FROM dotnet-restore AS build
 RUN dotnet publish Valour/Server/Valour.Server.csproj -c Release -o out
 
 # Start with a smaller runtime image for the final image
-FROM mcr.microsoft.com/dotnet/aspnet:10.0.3-noble-chiseled-extra AS final
+FROM mcr.microsoft.com/dotnet/aspnet:11.0-preview-noble-chiseled-extra AS final
 
 # Set the working directory to the app's output directory
 WORKDIR /app
