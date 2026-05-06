@@ -1,6 +1,6 @@
-# Start with the official .NET 11.0 SDK image
+# Start with the official .NET 11 preview SDK image
 # Cache the dependencies so we don't have to restore them every time
-FROM mcr.microsoft.com/dotnet/sdk:11.0 AS dependencies
+FROM mcr.microsoft.com/dotnet/sdk:11.0.100-preview.3 AS dependencies
 
 # Install Node.js (replace with the latest LTS version)
 RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
@@ -19,12 +19,12 @@ FROM dependencies AS dotnet-restore
 # Copy the app's source code to the container image
 COPY . .
 
-# Restore workloads
-RUN dotnet workload restore Valour/Valour.sln
+# Restore workloads required by the server publish graph
+RUN dotnet workload restore Valour/Server/Valour.Server.csproj
 
 # Restore the app's dependencies
 RUN dotnet restore Valour/BuildTools/CssBundler/CssBundler.csproj
-RUN dotnet restore Valour/Valour.sln
+RUN dotnet restore Valour/Server/Valour.Server.csproj
 
 # Build stage for building/publishing the app
 FROM dotnet-restore AS build
@@ -42,7 +42,7 @@ FROM dotnet-restore AS build
 RUN dotnet publish Valour/Server/Valour.Server.csproj -c Release -o out
 
 # Start with a smaller runtime image for the final image
-FROM mcr.microsoft.com/dotnet/aspnet:11.0-preview-noble-chiseled-extra AS final
+FROM mcr.microsoft.com/dotnet/aspnet:11.0.0-preview.3-resolute-chiseled-extra AS final
 
 # Set the working directory to the app's output directory
 WORKDIR /app
