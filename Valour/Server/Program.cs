@@ -234,7 +234,16 @@ public partial class Program
         app.MapFallbackToFile("_content/Valour.Client/index.html");
 
         app.MapHub<CoreHub>(CoreHub.HubUrl, options => { options.AllowStatefulReconnects = true; });
-        
+
+        app.MapGet("/healthz", async (ValourDb db, CancellationToken ct) =>
+        {
+            if (!await db.Database.CanConnectAsync(ct))
+            {
+                return ValourResult.Problem("db not ready");
+            }
+
+            return ValourResult.Ok("ready");
+        });
     }
 
     public static void ConfigureServices(WebApplicationBuilder builder)
