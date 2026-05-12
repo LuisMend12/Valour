@@ -99,7 +99,8 @@ public class MessageReaction
             
             e.HasOne(x => x.AuthorMember)
                 .WithMany()
-                .HasForeignKey(x => x.AuthorMemberId);
+                .HasForeignKey(x => x.AuthorMemberId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             // VERY important index
             e.HasIndex(x => x.MessageId);

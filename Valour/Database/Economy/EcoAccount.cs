@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 using Valour.Shared.Models.Economy;
 
 namespace Valour.Database.Economy;
@@ -68,4 +69,15 @@ public class EcoAccount : ISharedEcoAccount
     /// </summary>
     [Timestamp]
     public uint RowVersion { get; set; }
+
+    public static void SetupDbModel(ModelBuilder builder)
+    {
+        builder.Entity<EcoAccount>(e =>
+        {
+            e.HasOne(x => x.PlanetMember)
+                .WithMany()
+                .HasForeignKey(x => x.PlanetMemberId)
+                .OnDelete(DeleteBehavior.SetNull);
+        });
+    }
 }

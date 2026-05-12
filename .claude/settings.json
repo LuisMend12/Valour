@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"g:\\\\broswer download\\\\Valour\" -Recurse -Filter \"*BotApi*\" -Name)",
+      "PowerShell(Get-ChildItem -Path \"g:\\\\broswer download\\\\Valour\" -Recurse -Directory | Where-Object { $_.Name -eq \"Database\" } | Select-Object -ExpandProperty FullName)"
+    ]
+  }
+}

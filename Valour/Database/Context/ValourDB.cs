@@ -304,6 +304,7 @@ public partial class ValourDb : DbContext
         
         CdnBucketItem.SetupDbModel(modelBuilder);
         Transaction.SetupDbModel(modelBuilder);
+        EcoAccount.SetupDbModel(modelBuilder);
     }
 }
 

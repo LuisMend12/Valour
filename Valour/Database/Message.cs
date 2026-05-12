@@ -119,7 +119,8 @@ public class Message : ISharedMessage
             
             e.HasOne(x => x.AuthorMember)
                 .WithMany(x => x.Messages)
-                .HasForeignKey(x => x.AuthorMemberId);
+                .HasForeignKey(x => x.AuthorMemberId)
+                .OnDelete(DeleteBehavior.SetNull);
             
             e.HasOne(x => x.ReplyToMessage)
                 .WithMany(x => x.Replies)
