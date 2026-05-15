@@ -171,6 +171,36 @@ public class BotService
             if (profile is not null)
                 _db.UserProfiles.Remove(profile);
 
+            // Delete all data associated with the bot's planet memberships before
+            // removing the members themselves, so nothing is left dangling.
+            var memberIds = await _db.PlanetMembers
+                .Where(x => x.UserId == botId)
+                .Select(x => x.Id)
+                .ToListAsync();
+
+            if (memberIds.Count > 0)
+            {
+                await _db.MessageReactions
+                    .Where(x => x.AuthorMemberId != null && memberIds.Contains(x.AuthorMemberId.Value))
+                    .ExecuteDeleteAsync();
+
+                await _db.Messages
+                    .Where(x => x.AuthorMemberId != null && memberIds.Contains(x.AuthorMemberId.Value))
+                    .ExecuteDeleteAsync();
+
+                await _db.UserChannelStates
+                    .Where(x => x.PlanetMemberId != null && memberIds.Contains(x.PlanetMemberId.Value))
+                    .ExecuteDeleteAsync();
+
+                await _db.EcoAccounts
+                    .Where(x => x.PlanetMemberId != null && memberIds.Contains(x.PlanetMemberId.Value))
+                    .ExecuteDeleteAsync();
+
+                await _db.PlanetMembers
+                    .Where(x => memberIds.Contains(x.Id))
+                    .ExecuteDeleteAsync();
+            }
+
             // Remove the bot user
             _db.Users.Remove(bot);
             await _db.SaveChangesAsync();

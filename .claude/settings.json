@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(Get-ChildItem -Path \"g:\\\\broswer download\\\\Valour\" -Recurse -Filter \"*BotApi*\" -Name)",
-      "PowerShell(Get-ChildItem -Path \"g:\\\\broswer download\\\\Valour\" -Recurse -Directory | Where-Object { $_.Name -eq \"Database\" } | Select-Object -ExpandProperty FullName)"
+      "PowerShell(Get-ChildItem -Path \"g:\\\\broswer download\\\\Valour\" -Recurse -Directory | Where-Object { $_.Name -eq \"Database\" } | Select-Object -ExpandProperty FullName)",
+      "Bash(dotnet workload *)",
+      "Bash(dotnet restore *)",
+      "PowerShell(Get-ChildItem -Path \"G:\\\\broswer download\\\\Valour\" -Recurse -Directory -ErrorAction SilentlyContinue | Select-Object -First 30 | ForEach-Object { $_.Name })"
     ]
   }
 }

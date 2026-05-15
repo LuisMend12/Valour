@@ -54,7 +54,7 @@ public class UserChannelState : ISharedUserChannelState
             e.HasOne(x => x.PlanetMember)
                 .WithMany(x => x.ChannelStates)
                 .HasForeignKey(x => x.PlanetMemberId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Often queried by all
             e.HasIndex(x => x.ChannelId);

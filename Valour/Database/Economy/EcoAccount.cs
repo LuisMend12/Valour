@@ -77,7 +77,7 @@ public class EcoAccount : ISharedEcoAccount
             e.HasOne(x => x.PlanetMember)
                 .WithMany()
                 .HasForeignKey(x => x.PlanetMemberId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }
